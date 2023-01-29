@@ -21,8 +21,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     mkdir -p /opt/pycharm && \
     curl -L "https://download.jetbrains.com/product?code=PCC&latest&distribution=linux" \
     | tar -C /opt/pycharm --strip-components 1 -xzvf - && \
-    chown jovyan /opt/pycharm/bin/idea.properties && \
+    chown ${NB_USER} /opt/pycharm/bin/idea.properties && \
     ln -s /opt/pycharm/bin/pycharm.sh /usr/bin/pycharm && \
+    ln -s .local/bin/projector /usr/bin/projector && \
     pip install -U pip && \
     conda update -n base conda && \
     conda install python=${PYTHON_VERSION} && \

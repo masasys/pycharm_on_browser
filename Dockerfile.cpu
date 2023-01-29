@@ -4,6 +4,7 @@ COPY ./requirements.txt /tmp/requirements.txt
 # install & clean
 #
 USER root
+COPY ./plugins /tmp/plugins
 RUN pip install -r /tmp/requirements.txt && \
     jupyter lab clean -y && \
     npm cache clean --force && \

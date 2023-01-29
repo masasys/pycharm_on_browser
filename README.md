@@ -28,6 +28,29 @@ docker-compose up
 http://localhost:8888
 ```
 
+## IDE Restart
+
+If the projector stops due to some error, use the following command.
+
+##### in container command line
+
+```bash
+~/.local/bin/projector run
+```
+
+##### host (docker-compose)
+
+```bash
+docker-compose exec pycharm /home/jovyan/.local/bin/projector run
+```
+
+### IDE Settings
+
+```bash
+~/.local/bin/projector config list
+~/.local/bin/projector config show
+```
+
 ## Edit
 
 ### Other Jetbrains Product
@@ -65,3 +88,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ...
 ```
 
+## extra
+
+### Plugins
+
+> marketplace
+> https://plugins.jetbrains.com/
+
+> https://pleiades.io/help/pycharm/2022.3/directories-used-by-the-ide-to-store-settings-caches-plugins-and-logs.html
+
+##### Mac (jetbrains tool box)
+
+- /Users/${USER}/Library/Application Support/JetBrains/Toolbox/apps/PyCharm-P/ch-0/222.4459.20/PyCharm.app.plugins
+
+##### Linux
+
+- /home/jovyan/.projector/configs/pycharm/plugins
+- /home/jovyan/.projector/configs/pycharm/system/plugins

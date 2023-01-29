@@ -4,11 +4,20 @@ services:
     image: pycharm-c:23.01.26
     ports:
       - "8888:8888"
-    #volumes:
+    volumes:
+      - ./plugins:/tmp/plugins
     #  - ./work:/home/dev/app/
     #  - app-cache:/home/dev/.gradle/:rw
-    #environment:
-    #  - JAVA_OPTS=-server -Xms1024M -Xmx1024M -XX:MetaspaceSize=128m -Xss3m
+    # https://qiita.com/m-shimao/items/d420c1773ecf5fbaabdf
+    environment:
+      - NB_USER=$NB_USER
+      - NB_GROUP=$NB_USER
+      - NB_UID=$NB_UID
+      - NB_GID=$NB_UID
+      - CHOWN_HOME=yes
+    working_dir: /home/$NB_USER/work
+    environment:
+      - JAVA_OPTS=-server -Xms1024M -Xmx1024M -XX:MetaspaceSize=128m -Xss3m
     # tty: true
     # command: ["/bin/sh", "-c", "while :; do sleep 10; done"]
     command: ["jupyter", "lab", "--no-browser", "--port", "8888", "--ip=*", "--allow-root", "--NotebookApp.token=''", "--NotebookApp.password=''"]
