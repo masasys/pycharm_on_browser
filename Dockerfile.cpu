@@ -1,15 +1,23 @@
 FROM pycharm-c:base
 COPY ./requirements.txt /tmp/requirements.txt
+ENV PYTHON_VERSION=3.8.15
 #
 # install & clean
 #
-USER root
-COPY ./plugins /tmp/plugins
-RUN pip install -r /tmp/requirements.txt && \
+USER $NB_UID
+RUN mamba install python=${PYTHON_VERSION} && \
+    pip install -U pip && \
+    pip install -U pyOpenSSL jupyter-projector-proxy && \
+    pip install projector-installer --user && \
+    pip install -r /tmp/requirements.txt && \
+    jupyter labextension install @jupyterlab/server-proxy && \
     jupyter lab clean -y && \
     npm cache clean --force && \
     conda clean --all -f -y
+USER root
+COPY ./plugins.sh /tmp/plugins.sh
+RUN apt install -y jq libarchive-tools && bash /tmp/plugins.sh
 USER $NB_UID
 WORKDIR /home/jovyan
 EXPOSE 8888
-CMD jupyter lab --no-browser --port 8888 --ip=* --allow-root --NotebookApp.token='' --NotebookApp.password=''
+CMD bash /tmp/lifecyclehooks.sh && jupyter lab --no-browser --port 8888 --ip=* --allow-root --NotebookApp.token='' --NotebookApp.password=''
